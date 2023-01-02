@@ -1,34 +1,45 @@
-//your code here
-const itemInput = document.getElementById('item-name-input');
-const priceInput = document.getElementById('item-price-input');
-const addButton = document.getElementById('add');
-const itemsTable = document.getElementById('items');
-const totalElement = document.getElementById('total');
+var itemName = document.getElementById("item-name-input");
+var itemQuantity = document.getElementById("item-qty-input");
+var itemPrice = document.getElementById("item-price-input");
 
-let total = 0;
+var tbody = document.querySelector("tbody");
 
-addButton.addEventListener('click', () => {
-    const itemName = itemInput.value;
-    const itemPrice = priceInput.value;
+var grandTotal = document.getElementById("total");
+var grand_total = 0;
 
-    if (itemName.trim() === '' || itemPrice <= 0) {
-        // Invalid input, do nothing
-        return;
-    }
+var addItem = document.querySelector("#add");
 
-    // Add the item to the table
-    const row = document.createElement('tr');
-    row.innerHTML = `
-    <td role="row" id="item">${itemName}</td>
-    <td role="row" id="price">${itemPrice}</td>
-  `;
-    itemsTable.appendChild(row);
+addItem.addEventListener("click", (event) => {
+  event.preventDefault();
 
-    // Update the total
-    total += parseInt(itemPrice, 10);
-    totalElement.innerHTML = `Total: ${total}`;
+  let newRow = document.createElement("tr");
 
-    // Clear the input fields
-    itemInput.value = '';
-    priceInput.value = '';
+  let name = document.createElement("td");
+  name.innerText = itemName.value;
+  name.classList.add("item");
+  newRow.append(name);
+
+  let price = document.createElement("td");
+  price.innerText = itemPrice.value;
+  newRow.append(price);
+  price.classList.add("price");
+
+  let quantity = document.createElement("td");
+  quantity.innerText = itemQuantity.value;
+  newRow.append(quantity);
+
+  if (itemName.value && itemQuantity.value && itemPrice.value) {
+    let total = document.createElement("td");
+    total.innerText = itemPrice.value * itemQuantity.value;
+    newRow.append(total);
+
+    tbody.append(newRow);
+
+    grand_total += Number(total.innerText);
+    grandTotal.innerHTML = "Grand Total: ₹ " + grand_total;
+  }
+
+  itemName.value = "";
+  itemQuantity.value = "";
+  itemPrice.value = "";
 });
